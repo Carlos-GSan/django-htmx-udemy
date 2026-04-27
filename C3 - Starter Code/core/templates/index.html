@@ -3,8 +3,41 @@
 {% block content %}
 
 <div class="flex justify-center items-center">
-    <div class="bg-white p-6 rounded-lg w-full lg:w-3/4">
-        <h1 class="text-4xl">Book Tracker</h1>
+    <div class="bg-white p-6 rounded-lg w-full lg:w-3/4 grid grid-cols-4 gap-4">
+        <div class="col-span-3">
+            <h1 class="text-4xl">Book Tracker</h1>
+            <p class="mt-4">Your books are listed below</p>
+            <table class="table table-zebra mt-8" id="book-table">
+                <thead>
+                    <tr>
+                        <th>NAME</th>
+                        <th>GENRE</th>
+                    </tr>
+                </thead>
+                <tbody hx-on::after-settle="
+                    this.firstChild.style.background = 'lightgreen';
+                    setTimeout(() => this.firstChild.style.background = 'white', 2000)
+                    ">
+                    {% for book in books %}
+                    <tr>
+                        {% include 'partials/book-row.html' %}
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td>You have no books in your library</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+        </div>
+        <div class="col-span-1">
+            <h1 class="text-4xl mb-4">Add Book</h1>
+
+            {% include 'partials/book-form.html' %}
+        </div>
+            
     </div>
 </div>
 {% endblock %}
