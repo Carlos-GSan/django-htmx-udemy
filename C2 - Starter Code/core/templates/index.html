@@ -5,14 +5,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Django & HTMX</title>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js" integrity="sha384-H5SrcfygHmAuTDZphMHqBJLc3FhssKjG7w/CeCpFReSfwBWDTKpkzPP8c+cLsK+V" crossorigin="anonymous"></script>
 
 
 </head>
 <body>
 
     <h1>Hello World!</h1>
+    
+    <div id="site-text" hx-boost="true">
+        <p>{% lorem 2 %}</p>
 
-    <p>{% lorem 2 %}</p>
+        <a href="{% url 'about' %}"
+
+            hx-target="#site-text"
+            hx-swap="innerHTML transition:true"
+            style="text-decoration: underline; color: blue; cursor: pointer;">About Us</a>
+    </div>
 
     <hr/>
 
@@ -40,6 +49,22 @@
         </tbody>
     </table>
     
-    <button class="btn">Get more</button>
+    <button class="btn" 
+        hx-get="{% url 'products' %}"
+        hx-target="#product-table > tbody"
+        hx-swap="innerHTML transition:true">Get more</button>
+
+        <form style="margin-top: 24px" 
+            hx-post="{% url 'index' %}"
+            hx-target="#product-table > tbody"
+            hx-swap="beforeend transition:true"
+            hx-on::after-request="document.getElementById('product').value = ''">
+
+            {% csrf_token %}
+            <label for="product">Product</label>
+            <input id="product" type="text" name="product">
+
+            <input type="submit" value="submit">
+        </form>
 </body>
 </html>
