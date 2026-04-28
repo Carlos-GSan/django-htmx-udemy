@@ -10,6 +10,14 @@ class BookForm(forms.Form):
         choices=Book.GenreChoices.choices,
         widget=forms.Select(attrs={'class': 'select select-primary'})
     )
+
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        min_char = 5
+        max_char = 50
+        if len(name) < min_char or len(name) > max_char:
+            raise forms.ValidationError(f"Book name must be between {min_char} and {max_char}")
+        return name
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)

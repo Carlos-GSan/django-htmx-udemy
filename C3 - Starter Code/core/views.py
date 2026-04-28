@@ -1,5 +1,7 @@
-from django.shortcuts import render
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from core.forms import BookForm
 from core.models import Book
 
@@ -25,3 +27,12 @@ def index(request):
     books = request.user.books.all()
     context = {'books': books, 'form': BookForm()}
     return render(request, 'index.html', context)
+
+@login_required
+@require_http_methods(['DELETE'])
+def delete_book(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    request.user.books.remove(book)
+    response = HttpResponse(status=204)
+    response['HX-Trigger'] = 'book-deleted'
+    return response

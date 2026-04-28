@@ -1,9 +1,24 @@
 <tr>
+    <td>{{ book.name }}</td>
+    <td>{{ book.genre }}</td>
     <td>
-        {{ book.name }}
-    </td>
-    <td>
-        {{ book.genre }}
+        <button class="btn btn-sm btn-error"
+            hx-delete="{% url 'delete-book' book.pk %}"
+            hx-on:book-deleted="fadeOutAndRemove(this.closest('tr'));"
+            hx-trigger='confirmed'
+            onClick="Swal.fire({
+                title: 'Confirm', 
+                text:'Are you sure you want to delete {{ book.name }}?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, destroy it!',
+                showCloseButton: true,
+            }).then((result)=>{
+                if(result.isConfirmed){
+                htmx.trigger(this, 'confirmed');  
+                } 
+            });"
+            >Delete</button>
     </td>
 
 </tr>
