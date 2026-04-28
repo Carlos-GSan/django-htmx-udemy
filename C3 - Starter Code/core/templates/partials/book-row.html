@@ -1,5 +1,6 @@
 <tr>
-    <td>{{ book.name }}</td>
+    <td hx-get="{% url 'book-detail' book.pk %}"
+        hx-target="#container">{{ book.name }}</td>
     <td>{{ book.genre }}</td>
     <td>
         <button class="btn btn-sm btn-error"

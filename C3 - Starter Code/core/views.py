@@ -36,3 +36,9 @@ def delete_book(request, pk):
     response = HttpResponse(status=204)
     response['HX-Trigger'] = 'book-deleted'
     return response
+
+@login_required
+def book_detail(request, pk):
+    book = get_object_or_404(Book, pk=pk)
+    context = {'book': book}
+    return render(request, 'book-detail.html', context)
