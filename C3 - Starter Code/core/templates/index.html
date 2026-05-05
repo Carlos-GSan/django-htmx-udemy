@@ -4,37 +4,39 @@
 
 <div class="flex justify-center items-center" id="container">
     <div class="bg-white p-6 rounded-lg w-full lg:w-3/4 grid grid-cols-4 gap-4">
-        <div class="col-span-3">
+
+
+        <div class="col-span-4 order-2 lg:order-1 lg:col-span-3">
             <h1 class="text-4xl">Book Tracker</h1>
-            <p class="mt-4">Your books are listed below</p>
-            <table class="table table-zebra mt-8" id="book-table">
-                <thead>
-                    <tr>
-                        <th>NAME</th>
-                        <th>GENRE</th>
-                        <th>ACTIONS</th>
-                    </tr>
-                </thead>
-                <tbody hx-on::after-settle="
-                    this.firstChild.style.background = 'lightgreen';
-                    setTimeout(() => this.firstChild.style.background = 'white', 2000);
-                    clearForm();
-                    ">
-                    {% for book in books %}
-                    <tr>
-                        {% include 'partials/book-row.html' %}
-                    </tr>
-                    {% empty %}
-                    <tr class="empty-message">
-                        <td>You have no books in your library</td>
-                    </tr>
-                    {% endfor %}
+            <p class="my-4">Your books are listed below</p>
+            <!--search bar-->
+            <label class="input">
+                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    >
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.3-4.3"></path>
+                    </g>
+                </svg>
+                <input 
+                    type="search" 
+                    required placeholder="Search" 
+                    name="search"
+                    hx-get="{% url 'search' %}"
+                    hx-trigger="keyup"
+                    hx-target="#book-table"/>
+            </label>
 
-                </tbody>
 
-            </table>
+            <!--Table-->
+            {% include 'partials/book-table.html' %}
         </div>
-        <div class="col-span-1">
+        <div class="col-span-4 order-1 lg:order-2 lg:col-span-1">
             <h1 class="text-4xl mb-4">Add Book</h1>
 
             {% include 'partials/book-form.html' %}
