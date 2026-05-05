@@ -1,10 +1,61 @@
 {% extends 'base.html' %}
 
+{% block scripts %}
+   <script>
+    document.addEventListener("DOMContentLoaded", function(){
+        setTimeout(() => {
+            window.scrollTo(0, document.body.scrollHeight)
+        }, 150)
+    } )
+</script>     
+{% endblock scripts %}
+
+
 {% block content %}
 
 <div class="text-center">
 
     <h1 class="text-4xl">{{ room.name }}</h1>
+
+    <div class="flex flex-col mx-4 lg:w-[75%] lg:mx-auto">
+        <div id="chat-box" class="flex-1 overflow-y-auto mb-4 card bg-base-100 shadow-lg p-4">
+            
+            {% for message in messages %}
+            <div class="chat chat-start">
+                <div class="chat-image avatar">
+                    <div class="w-10 rounded-full">
+                    <img
+                        alt="Tailwind CSS chat bubble component"
+                        src="https://img.daisyui.com/images/profile/demo/kenobee@192.webp"
+                    />
+                    </div>
+                </div>
+                <div class="chat-header">
+                    {{ message.user.username}}
+                    <time class="text-xs opacity-50">{{ message.created_at }}</time>
+                </div>
+                    <div class="chat-bubble chat-bubble-primary"> {{ message.content }}</div>
+                <div class="chat-footer opacity-50">Delivered</div>
+            </div>
+            {% empty %}
+                <p class="mt-4 text-xl">There are currently no messages in this room</p> 
+            {% endfor %}
+        </div>
+        <!-- Form to allow the user to add new messages -->
+         <form id="chat-form" class="sticky bottom-0 bg-base-100 shadow-xl p-4 rounded-t-xl border-t border-base-300"
+         hx-ext="ws" ws-connect="/ws/chat/{{ room.slug }}"
+         ws.send="">
+            <div class="flex gap-1">
+                <input type="text"
+                    id="chat-message-input"
+                    name="message"
+                    minlength="2"
+                    class="input input-bordered flex-1"
+                    placeholder="Type your message...">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+         </form>
+    </div>
 
 </div>
 

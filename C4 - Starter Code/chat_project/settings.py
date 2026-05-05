@@ -19,6 +19,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,7 +29,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'allauth',
     'allauth.account',
-    'core'
+    'core',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -121,3 +122,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'core.User'
 LOGIN_REDIRECT_URL = '/'
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+ASGI_APPLICATION = "chat_project.asgi.application"
